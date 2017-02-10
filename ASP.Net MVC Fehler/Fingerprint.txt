@@ -1,0 +1,6 @@
+https://dzone.com/articles/fingerprint-css-mvc-web-sites
+https://www.gservon.de/iis-7-5-saubere-urls-durch-url-rewrite/
+
+Wichtig: Denk dran das das Module "URL-Rewrite" im ISS installiert ist
+
+https://www.iis.net/downloads/microsoft/url-rewrite
