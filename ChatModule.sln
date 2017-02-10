@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatModule", "ChatModule\ChatModule.csproj", "{2B2B9271-2598-4D1F-B88B-F09B80B54035}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - UI", "01 - UI", "{C6DD4864-1050-46E3-AC15-429CD2C3C1E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - DataAccess", "02 - DataAccess", "{471430B9-3BD0-45A8-AC70-816B7E6FB69A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatModule.DataAccess", "ChatModule.DataAccess\ChatModule.DataAccess.csproj", "{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - DBShema", "03 - DBShema", "{7356040A-E488-4D42-83BA-4A11C2C2AF4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatModule.DBShema", "ChatModule.DBShema\ChatModule.DBShema.csproj", "{34441545-3230-43FD-A32A-5C788AC07FBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 - BL", "04 - BL", "{1110B2D3-E177-4BF1-8E3E-C9CC5D45694E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatModule.Core", "ChatModule.Core\ChatModule.Core.csproj", "{BFB137AA-823B-4A0C-B71A-A137EEC7440E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B2B9271-2598-4D1F-B88B-F09B80B54035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B2B9271-2598-4D1F-B88B-F09B80B54035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B2B9271-2598-4D1F-B88B-F09B80B54035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B2B9271-2598-4D1F-B88B-F09B80B54035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34441545-3230-43FD-A32A-5C788AC07FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34441545-3230-43FD-A32A-5C788AC07FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34441545-3230-43FD-A32A-5C788AC07FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34441545-3230-43FD-A32A-5C788AC07FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB137AA-823B-4A0C-B71A-A137EEC7440E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB137AA-823B-4A0C-B71A-A137EEC7440E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB137AA-823B-4A0C-B71A-A137EEC7440E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB137AA-823B-4A0C-B71A-A137EEC7440E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B2B9271-2598-4D1F-B88B-F09B80B54035} = {C6DD4864-1050-46E3-AC15-429CD2C3C1E4}
+		{8F37BEA7-2DA0-4F60-9765-873FE6AB25FD} = {471430B9-3BD0-45A8-AC70-816B7E6FB69A}
+		{34441545-3230-43FD-A32A-5C788AC07FBA} = {7356040A-E488-4D42-83BA-4A11C2C2AF4F}
+		{BFB137AA-823B-4A0C-B71A-A137EEC7440E} = {1110B2D3-E177-4BF1-8E3E-C9CC5D45694E}
+	EndGlobalSection
+EndGlobal

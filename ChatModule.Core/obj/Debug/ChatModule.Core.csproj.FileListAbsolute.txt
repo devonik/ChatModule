@@ -1,0 +1,10 @@
+C:\TestProjects\ChatModuleProject\ChatModule\ChatModule.Core\bin\Debug\ChatModule.Core.dll
+C:\TestProjects\ChatModuleProject\ChatModule\ChatModule.Core\bin\Debug\ChatModule.Core.pdb
+C:\TestProjects\ChatModuleProject\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.dll
+C:\TestProjects\ChatModuleProject\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.pdb
+C:\TestProjects\ChatModuleProject\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.csprojResolveAssemblyReference.cache
+D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\bin\Debug\ChatModule.Core.dll
+D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\bin\Debug\ChatModule.Core.pdb
+D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.csprojResolveAssemblyReference.cache
+D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.dll
+D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.pdb

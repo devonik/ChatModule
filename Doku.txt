@@ -1,0 +1,39 @@
+28.11.2016-30.11.2016: Erstellung des DBSehma im CodeFirst Prinzip (Die Datenbank wird durch den Code generiert) 
+			https://msdn.microsoft.com/en-us/library/jj193542(v=vs.113).aspx
+		       Problem: Wenn man die localdb verwendet, kann nur eine Verbindung zur Datenbank aktiv sein, z.B. kann die Seite nicht aufgerufen werden wenn in Visual Studio eine Verbindung (z.B. im Server Explorer) besteht.
+01.12.-04.12.2016    : Erstellung der ersten Abfragen, Änderung und Löschung in der Datenbank.
+	  	       Erstellen des Chats ohne Signal R.
+04.12.-06.12.2016    : Implementierung Signal R
+		       Problem: Daten werden nicht in Real Time zurückgegeben ! 		       	       Lösung Jquery Conditions waren falsch Chat wir efolgreich realtime geladen!!!
+
+
+
+2017:
+
+09.01.-17.01.2017    : User2User im Chat funktioniert
+		       BUG: beim Senden werden mehrere Messages gesendet (eines mit leeren Inhalt) 
+
+23.01.2017	     : Bugs: Der Gegenüber wird erst nach dem 1. Mal kommunizieren "erkannt"
+			     Es werden mind. 1 leere Message zusätzlich gesendet, aber nur in der Oberfläche und nicht in der Datenbank
+		       Neues: Anzeige neuer Messages im Datenbank Schema
+
+24.01.2017: Push Notifications: http://www.dotnetawesome.com/2016/05/push-notification-system-with-signalr.html
+				http://www.codemag.com/Article/1210071
+
+BUG (Local DB login Failed)
+https://www.codeproject.com/Tips/775607/How-to-fix-LocalDB-Requested-Login-failed
+
+25.01.2017: Notification:	Sobald eine Message gesendet wurde, bekommt der Empfänger eine Notification. 
+				Offen: Was ist, wenn der Empfänger "offline" ist.
+
+				Wenn der User sich einloggt, wird der last_login timestamp gespeichert. Beim nächsten Mal einloggen werden alle Messages die seitdem reingekommen sind als Notification angezeigt.
+				Bug: Die Notification wird falsch hochgezählt. "Keine Neuigkeiten kommt mehrmals"
+				Gefixt!
+
+Problem, wenn die localDB die Database nicht erstellen kann:
+A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 50 - Local Database Runtime error occurred. Cannot create an automatic instance. See the Windows Application event log for error details.
+)
+
+Lösung: IIS -> Application Pool -> Advanced Settings -> Load User Profile -> True
+
+Lösung Gefunden: Im Windows Event Logger
