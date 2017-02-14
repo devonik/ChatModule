@@ -26,3 +26,17 @@ D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DataAccess\bin\Debug\New
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.csprojResolveAssemblyReference.cache
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.dll
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\ChatModule.DataAccess.dll.config
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\ChatModule.DataAccess.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\ChatModule.DataAccess.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\ChatModule.DBShema.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\EntityFramework.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\Newtonsoft.Json.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\ChatModule.DBShema.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\EntityFramework.xml
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\bin\Debug\Newtonsoft.Json.xml
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.csprojResolveAssemblyReference.cache
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DataAccess\obj\Debug\ChatModule.DataAccess.pdb

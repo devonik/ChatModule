@@ -462,20 +462,16 @@ var Chat = Chat || (function () {
                 success: function (data) {
                     currentUserDataSource = data;
                     console.log(currentUserDataSource);
+                    getMessagesSinceLastLogout(currentUserIdParam);
+                    checkUserIsAdmin(currentUserIdParam);
+                    $("#top h4").html("Sie melden sich als: <b>" + currentUserDataSource.full_name + "</b>");
+                    toggleChat();
                 },
                 error: function (e) {
-                    console.log("Userinfos konnten für den User mit der ID: " + currentUserId + " nicht geladen werden.\n error: " + e);
+                    console.log("Userinfos konnten für den User mit der ID: " + currentUserIdParam + " nicht geladen werden.");
+                    console.log(e.responseText);
                 }
             });
-           
-        setTimeout(function () {
-         }, 5000);
-        setTimeout(function () {
-            getMessagesSinceLastLogout(currentUserIdParam);
-            checkUserIsAdmin(currentUserDataSource.user_id);
-            $("#top h4").html("Sie melden sich als: <b>" + currentUserDataSource.full_name + "</b>");
-            toggleChat();
-        },500);
     }
     else{
 
