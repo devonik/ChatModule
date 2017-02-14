@@ -384,25 +384,21 @@ var Chat = Chat || (function () {
     //        text.html("-");
     //    }
     //}
-    function getMessagesSinceLastLogin() {
+    function getMessagesSinceLastLogout(currentUserIdParam) {
         $.ajax({
             type: "GET",
-            url: "/Chatlogs/GetMessagesSinceLastLogin?currentUserId=" + currentUserDataSource.user_id,
+            url: "/Chatlogs/GetMessagesSinceLastLogin?currentUserId=" + currentUserIdParam,
             success: function (data) {
                 console.log("Initialisiere neue Notifications seit letztem Login...")
                 
                 var count = 0;
                 if (data.length > 0) {
                     $.each(data, function (index, value) {
-                        var message = "Neue Message von: " + allUserDatasource[value.sender_id - 1].user_name;
                         console.log(index + ". Message seit letztem Login: " + message)
                         $('#notiContent').append($("<li>"+
                                                         "<a style='text-decoration:none !important;' href='javascript:Chat.OpenChatUser2User(" + value.sender_id + ", " + value.empfaenger_id + ");'>" +
-                                                            "Neue Message von: " + allUserDatasource[value.sender_id - 1].user_name+
+                                                            "Neue Message von: " + value.sender_name+"</br>"+
                                                             "Message: " + kendo.toString(kendo.parseDate(value.timestamp, "H:mm"), "H:mm") + "-> " + value.message +
-                                                        //<a id=\"showMessage_toggle\" class=\"k-button\" onclick=\"javascript:Chat.Toggle()\">+</a>" +
-                                                        //    "<div class=\"showMessage_fullMessage"+index+"\" style=\"display: none\">" + kendo.toString(kendo.parseDate(value.timestamp, "H:mm"), "H:mm") + "-> " + value.message + "</div>" +
-                                                        //"</div>"+
                                                         "</a>"+
                                                    "</li>"));
                         count++;
@@ -417,7 +413,7 @@ var Chat = Chat || (function () {
             }
         })
     }
-    function saveLoginTime() {
+    function saveLogoutTime() {
         $.ajax({
             type: 'POST',
             url: "/Chatlogs/SaveLoginTime?currentUserId=" + currentUserDataSource.user_id,
@@ -457,26 +453,29 @@ var Chat = Chat || (function () {
     }
 
     function init(currentUserIdParam) {
-        alert(currentUserIdParam);
-    if(currentUserIdParam != null){
-        alert("currentUserIdParam: "+currentUserIdParam);
-        $.ajax({
-            type: "GET",
-            url: "/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam,
-            success: function (data) {
-                currentUserDataSource = data;
-                console.log(currentUserDataSource);
-            },
-            error: function (e) {
-                console.log("Userinfos konnten für den User mit der ID: " + currentUserId + " nicht geladen werden.\n error: " + e);
-            }
-        });
+       
+        if(currentUserIdParam != null){
+            
+            $.ajax({
+                type: "GET",
+                url: "/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam,
+                success: function (data) {
+                    currentUserDataSource = data;
+                    console.log(currentUserDataSource);
+                },
+                error: function (e) {
+                    console.log("Userinfos konnten für den User mit der ID: " + currentUserId + " nicht geladen werden.\n error: " + e);
+                }
+            });
+           
         setTimeout(function () {
+         }, 5000);
+        setTimeout(function () {
+            getMessagesSinceLastLogout(currentUserIdParam);
             checkUserIsAdmin(currentUserDataSource.user_id);
-            alert("Hallo");
             $("#top h4").html("Sie melden sich als: <b>" + currentUserDataSource.full_name + "</b>");
             toggleChat();
-        },100);
+        },500);
     }
     else{
 
