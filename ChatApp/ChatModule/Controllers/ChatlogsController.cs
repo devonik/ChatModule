@@ -172,14 +172,14 @@ namespace ChatModule.Controllers
                          }), JsonRequestBehavior.AllowGet
             );
         }
-        public void SaveLoginTime(int currentUserId)
+        public void SaveLogoutTime(int currentUserId)
         {
             using (var db = new ChatContext())
             {
                 var result = db.User.SingleOrDefault(a => a.user_id == currentUserId);
                 if (result != null)
                 {
-                    result.last_login = DateTime.Now;
+                    result.last_logout = DateTime.Now;
                     db.SaveChanges();
                 }
             }
@@ -189,16 +189,17 @@ namespace ChatModule.Controllers
             var result = from a in db.Chatlog
                          join b in db.User on a.empfaenger_id equals b.user_id
                          where a.empfaenger_id == currentUserId
-                         where b.last_login < a.timestamp
+                         where a.timestamp>b.last_logout
                          select new
                          {
+                             sender_name = (db.User.Where(u => u.user_id == a.sender_id).Select(u => u.first_name+" "+u.last_name)),
                              sender_id = a.sender_id,
                              empfaenger_id = a.empfaenger_id,
                              message = a.message,
                              timestamp = a.timestamp,
-                             last_login_empfaenger = b.last_login
+                             last_logout_empfaenger = b.last_logout
                          };
-
+            
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         public void ClearChat()
@@ -221,7 +222,7 @@ namespace ChatModule.Controllers
                              user_id = a.user_id,
                              full_name = a.first_name + " " + a.last_name,
                              avatarlink = a.avatarlink,
-                             last_login = a.last_login
+                             last_logout = a.last_logout
                          };
 
             return Json(result.FirstOrDefault(), JsonRequestBehavior.AllowGet);

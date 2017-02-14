@@ -18,3 +18,13 @@ D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DBShema\bin\Debug\Entity
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.csprojResolveAssemblyReference.cache
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.dll
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\ChatModule.DBShema.dll.config
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\ChatModule.DBShema.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\ChatModule.DBShema.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\EntityFramework.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\EntityFramework.SqlServer.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\EntityFramework.xml
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\bin\Debug\EntityFramework.SqlServer.xml
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.csprojResolveAssemblyReference.cache
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.DBShema\obj\Debug\ChatModule.DBShema.pdb
