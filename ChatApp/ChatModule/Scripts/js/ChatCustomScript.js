@@ -9,6 +9,7 @@ var Chat = Chat || (function () {
     var currentUserDataSource = null;
     var adminId = 0;
     var empfaenger_id;
+    var partial;
     // Reference the auto-generated proxy for the hub.  
     var chat = $.connection.chatHub;
     var notification = $.connection.notificationHub;
@@ -17,8 +18,14 @@ var Chat = Chat || (function () {
         /// Fills the friendlist.
         /// </summary>
         var categorylist = [];
+        if (partial == "True") {
+            var url = "/Chat/Chatlogs/GetAllSupportUser";
+        }
+        else {
+            var url = "/Chatlogs/GetAllSupportUser";
+        }
         $.ajax({
-            url: "/Chatlogs/GetAllSupportUser",
+            url: url,
             success: function (data) {
                 $.each(data,
                     function (i, item) {
@@ -52,9 +59,16 @@ var Chat = Chat || (function () {
         /// Fills the friendlist.
         /// </summary>
         var categorylist = [];
+        //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
+        if (partial == "True") {
+            var url = "/Chat/Users/GetUserWithoutSupport?currentUserId=" + currentUserDataSource.user_id;
+        }
+        else {
+            var url = "/Users/GetUserWithoutSupport?currentUserId=" + currentUserDataSource.user_id;
+        }
         $.ajax({
             //?empfaenger_id=" + localStorage.getItem("currentUserId")
-            url: "/Users/GetUserWithoutSupport?currentUserId=" + currentUserDataSource.user_id,
+            url: url,
             success: function (data) {
                 $.each(data,
                     function (i, item) {
@@ -89,10 +103,17 @@ var Chat = Chat || (function () {
         var chatlogu2u = [];
         var sender_id = currentUserDataSource.user_id;
         var dataString = 'sender_id=' + sender_id + '&empfaenger_id=' + empfaenger_id;
+        //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
+        if (partial == "True") {
+            var url = "/Chat/Chatlogs/GetChatUser2User";
+        }
+        else {
+            var url = "/Chatlogs/GetChatUser2User";
+        }
         $.ajax({
             type: 'GET',
             data: dataString,
-            url: "/Chatlogs/GetChatUser2User",
+            url: url,
             success: function (data) {
                 console.log("GetChatUser2User: ");
                 console.log(data);
@@ -210,18 +231,25 @@ var Chat = Chat || (function () {
                 // Call the Send method on the hub. 
                 chat.server.send(sender_id, empfaenger_id, $('#message').val(), timeNow);
                     console.log("Sende Notification an Server...")
-                    notification.server.sendNotification("Neue Message von: " + sender_name, empfaenger_id);
+                    notification.server.sendNotification("Neue Message von: " + sender_name,sender_id, empfaenger_id);
                 
                 console.log("SignalR: ChatMessageSend getriggert...");
                 //$('#send').click(function () {
                 
                 // Clear text box and reset focus for next comment. 
-            var message = $("#message").val();
+                var message = $("#message").val();
+                //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
+                if (partial == "True") {
+                    var url = "/Chat/Chatlogs/SendMessage2Support";
+                }
+                else {
+                    var url = "/Chatlogs/SendMessage2Support";
+                }
             var dataString = 'sender_id=' + sender_id + '&empfaenger_id=' + empfaenger_id + '&message=' + message;
                 $.ajax({
                     type: 'POST',
                     data: dataString,
-                    url: '/Chatlogs/SendMessage2Support',
+                    url: url,
                     success: function (data) {
                         var array = [sender_id, empfaenger_id, $('#message').val(), timeNow];
                         console.log("Array wurde zum Hub gesendet: " + array);
@@ -354,8 +382,14 @@ var Chat = Chat || (function () {
         }, 600);
     }
     function checkUserIsAdmin(currentUserId) {
+        if (partial == "True") {
+            var url = "/Chat/Users/CheckUserIsAdmin?user_id=" + currentUserId;
+        }
+        else {
+            var url = "/Users/CheckUserIsAdmin?user_id=" + currentUserId;
+        }
         $.ajax({
-            url: "/Users/CheckUserIsAdmin?user_id="+currentUserId,
+            url: url,
             success: function (data) {
                 console.log(data);
                 if (data === "False") {
@@ -368,9 +402,12 @@ var Chat = Chat || (function () {
         })
     }
     function openChatUser2User(senderId, empfaengerId) {
-        console.log("Öffne Chat...");
-        console.log($(".friend#" + senderId).find("div"));
-        $(".friend#" + senderId).find("div").trigger("click");
+            console.log("Öffne Chat...");
+            console.log($(".friend#" + senderId).find("div"));
+            $(".friend#" + senderId).find("div").trigger("click");
+            setTimeout(function () {
+                $("#btnChat").click();
+            }, 500);
     }
     //function toggle() {
     //    var ele = $(".showMessage_fullMessage");
@@ -385,9 +422,16 @@ var Chat = Chat || (function () {
     //    }
     //}
     function getMessagesSinceLastLogout(currentUserIdParam) {
+        //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
+        if (partial == "True") {
+            var url = "/Chat/Chatlogs/GetMessagesSinceLastLogin?currentUserId=" + currentUserIdParam;
+        }
+        else {
+            var url = "/Chatlogs/GetMessagesSinceLastLogin?currentUserId=" + currentUserIdParam;
+        }
         $.ajax({
             type: "GET",
-            url: "/Chatlogs/GetMessagesSinceLastLogin?currentUserId=" + currentUserIdParam,
+            url: url,
             success: function (data) {
                 console.log("Initialisiere neue Notifications seit letztem Login...")
                 
@@ -451,14 +495,24 @@ var Chat = Chat || (function () {
         $("#login").show();
         $("#chatContent").hide();
     }
-
-    function init(currentUserIdParam) {
-       
+    function updateNotificationCount() {
+                var count = 0;
+                count = parseInt($('span.count').html()) || 0;
+                count++;
+                $('span.count').html(count);
+    }
+    function init(currentUserIdParam, Partial) {
+        partial = Partial;
         if(currentUserIdParam != null){
-            
+            if (partial == "True") {
+                var url = "/Chat/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam;
+            }
+            else{
+                var url = "/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam;
+            }
             $.ajax({
                 type: "GET",
-                url: "/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam,
+                url: url,
                 success: function (data) {
                     currentUserDataSource = data;
                     console.log(currentUserDataSource);
@@ -472,6 +526,17 @@ var Chat = Chat || (function () {
                     console.log(e.responseText);
                 }
             });
+            
+            var notification = $.connection.notificationHub;
+            notification.client.getNotification = function (notification,sender_id, empfaenger_id) {
+                console.log("Empfange Notification...");
+                if (empfaenger_id == (currentUserIdParam)) {
+                    console.log(notification + " wurde als Notfication dem Client hinzugefügt!");
+                    updateNotificationCount();
+                    $('#notiContent').html('');
+                    $('#notiContent').append("<a href='javascript:Chat.OpenChatUser2User(" + sender_id + ", " + empfaenger_id + ");'>"+$.notify(notification, "info")+"</a>");
+                }
+            };
     }
     else{
 
