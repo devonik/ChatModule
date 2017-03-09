@@ -4,7 +4,8 @@
 01.12.-04.12.2016    : Erstellung der ersten Abfragen, Änderung und Löschung in der Datenbank.
 	  	       Erstellen des Chats ohne Signal R.
 04.12.-06.12.2016    : Implementierung Signal R
-		       Problem: Daten werden nicht in Real Time zurückgegeben ! 		       	       Lösung Jquery Conditions waren falsch Chat wir efolgreich realtime geladen!!!
+		       Problem: Daten werden nicht in Real Time zurückgegeben ! Lösung Jquery Conditions waren falsch
+		       Chat wir efolgreich realtime geladen!!!
 
 
 
@@ -37,3 +38,6 @@ A network-related or instance-specific error occurred while establishing a conne
 Lösung: IIS -> Application Pool -> Advanced Settings -> Load User Profile -> True
 
 Lösung Gefunden: Im Windows Event Logger
+
+09.03.2017: Problem gelöst: Online/Offline in echtzeit...der SignalR hub wird im initialen laden der js connected, dadurch wurden die client signalr methoden nicht mehr getriggert.
+	    Lösung: Alle client signalr methoden müssen ins init
