@@ -246,7 +246,7 @@
 	margin-right: -38px;	
 }
 .message .bubble{	
-	background:#f0f4f7;
+	background:rgba(3,2,1,0);
 	font-size:13px;
 	font-weight:600;
 	padding:12px 13px;
@@ -258,7 +258,7 @@
 #chat-messages div.message.right .bubble{
 	float:right;
 	border-radius:5px 5px 0px 5px ;
-	background: #b3dced;
+	background: lightsalmon;
 }
 .bubble .corner {
     background: url('../../img/bubble-corner.png') 0 0 no-repeat;
