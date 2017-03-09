@@ -55,13 +55,14 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ChatRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChatModule.DBShema\ChatModule.DBShema.csproj">
       <Project>{34441545-3230-43FD-A32A-5C788AC07FBA}</Project>

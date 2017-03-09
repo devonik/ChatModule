@@ -52,10 +52,10 @@
   <ItemGroup>
     <Compile Include="ChatContext.cs" />
     <Compile Include="ChatInitializer.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Category2User.cs" />
     <Compile Include="Models\Chatlog.cs" />
+    <Compile Include="Models\SupportGroup.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\User2SupportGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

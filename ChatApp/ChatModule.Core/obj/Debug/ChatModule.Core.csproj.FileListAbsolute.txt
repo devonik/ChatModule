@@ -13,3 +13,7 @@ C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\bin\Debug\ChatModule.C
 C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.csprojResolveAssemblyReference.cache
 C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.dll
 C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.pdb
+D:\Abschlussprojekt\Niklas\Niklas\ChatModuleGit\ChatApp\ChatModule.Core\bin\Debug\ChatModule.Core.dll
+D:\Abschlussprojekt\Niklas\Niklas\ChatModuleGit\ChatApp\ChatModule.Core\bin\Debug\ChatModule.Core.pdb
+D:\Abschlussprojekt\Niklas\Niklas\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.dll
+D:\Abschlussprojekt\Niklas\Niklas\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.pdb

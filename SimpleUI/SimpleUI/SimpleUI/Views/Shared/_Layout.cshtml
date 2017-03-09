@@ -16,7 +16,12 @@
     <link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap/js/bootstrap.min.js"></script>
     <link href="~/Scripts/css/NotificationCustomStyle.css" rel="stylesheet">
+    <script src="~/Scripts/notify.min.js"></script>
     <style>
+        #chatContent{
+            width: 325px;
+            height: 650px;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +53,7 @@
         </div>
     </div>
     <div class="container body-content">
-        <div id="chatContent"></div>
+        <div id="chatContent" style="display:none;"></div>
         @RenderBody()
         <button id="btnChat"style="bottom: 0px; right: 0px; position:fixed;">Support Chat</button>
         <hr />
@@ -74,42 +79,40 @@
                 imageUrl: "/img/ChatIcon64.jpg"
             });
 
-
-            $("#chatContent").kendoWindow({
-                content:"/Chat/Home/GetChat?partial=true&currentUserId="+@ViewBag.CurrentUserId,
-                visible: false,
-                animation: {
-                    close: {
-                        effects: "fade:in"
-                    }
-                },
-                actions: [
-                            "Pin",
-                            "Minimize",
-                            "Maximize",
-                            "Close"
-                ],
-                modal:true
-            });
+            
+                
+                $("#chatContent").kendoWindow({
+                    content:"/Chat/Home/GetChat?partial=true&currentUserId="+@ViewBag.CurrentUserId,
+                    refresh: function (e){
+                        console.log(e);
+                        kendo.ui.progress(e.sender.element, false);
+                    },
+                    visible: false,
+                    animation: {
+                        close: {
+                            effects: "fade:in"
+                        }
+                    },
+                    actions: [
+                                "Pin",
+                                "Minimize",
+                                "Maximize",
+                                "Close"
+                    ],
+                    title: "Live Support Chat",
+                    modal:true
+                });
+            var chatWindow = $("#chatContent").data("kendoWindow");
+            kendo.ui.progress(chatWindow.element, true);
             $("#btnChat").click(function () {
-                var chatWindow = $("#chatContent").data("kendoWindow");
+                //Beim erneuten öffnen wird wieder die Kontaktliste angezeigt
+                setTimeout(function () {
+                    $('#chatview').fadeOut();
+                    $('#friendslist').fadeIn();
+                }, 50);
                 chatWindow.center().open();
             });
-            //Savet den Zeitpunkt, in dem der User die Seite schließt
-            $(window).bind('beforeunload', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: "/Chat/Chatlogs/SaveLogoutTime?currentUserId=" + @ViewBag.CurrentUserId,
-                    success: function () {
-                        alert("Der Timestamp vom Userlogin ID=" + @ViewBag.CurrentUserId + " wurde geändert");
-                    },
-                    error: function (e) {
-                        console.log("Userlogin ID=" + @ViewBag.CurrentUserId + " Timestamp wurde nicht gesetzt");
-                        console.log("ErrorMessage: "+e);
-                    }
-                });
-
-            });
+            
         });
     </script>
 </body>
