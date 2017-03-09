@@ -10,9 +10,9 @@ namespace ChatModule.DBShema
         {
         }
 
-        public DbSet<Category> Category { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Chatlog> Chatlog { get; set; }
-        public DbSet<Category2User> Category2User { get; set; }
+        public DbSet<SupportGroup> SupportGroup { get; set; }
+        public DbSet<User2SupportGroup> User2SupportGroup { get; set; }
     }
 }

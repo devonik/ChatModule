@@ -5,18 +5,15 @@
 }
 
 <div id="top">
-    <h2>Chat</h2>
     <h4></h4>
 </div>
-@*<div id="login" style="margin-top:30px;">
-    <label for="aktUser">Ihr Name: </label>
-    <div id="aktUser"></div> <button type="submit" onclick="Chat.Login();">Auswählen</button>
-</div>
-<div><button onclick="Chat.Logout();" class="k-button">Logout</button></div>*@
-<button class="k-button"><a href="http://niklappi-pc:1234/Chatlogs/ClearChat">Clear Chat</a></button>
+<button class="k-button"><a href="http://ham-hau-12254d:1239/Chat/Chatlogs/ClearChat">Clear Chat</a></button>
 <div id="chatContent">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <div id="chatbox">
+        <div id="chooseSupportDiv">
+            <input id="chooseSupport" style="display:none;"/>
+        </div>
         @*<div id="tabstrip">
             <ul>
                 <li>Friendlist</li>
@@ -42,24 +39,20 @@
                     <div id="friends">
 
                     </div>
-
                 </div>
             @*</div>*@
         @*<div id="tabstrip2">
             <div id="chatrooms"></div>
         </div>*@
             </div>
+        
+        
         @*****************************************Tabstrip1********************************************************@
         <div id="chatview" class="p1">
             <div id="profile">
 
-                <div id="close">
-                    <div class="cy"></div>
-                    <div class="cx"></div>
-                </div>
-                <p></p><br />
-                <span></span>
             </div>
+            
             <div id="chat-messages">
                 
 
@@ -67,7 +60,7 @@
 
             <div id="sendmessage">
                 <input type="text" placeholder="Send message..." id="message"/>
-                <button id="send" type="submit" onclick="Chat.SendMessage2Support();"></button>
+                <button id="send" type="submit" onclick="Chat.SendMessage();"></button>
             </div><br />
             <div id="isTyping" style="position:absolute;opacity:0.5;"></div>
 
@@ -93,8 +86,8 @@
         <script src="~/signalr/hubs"></script>
 
         <!--For Notification-->
-        <link href="~/Scripts/css/NotificationCustomStyle.css" rel="stylesheet">
-        <script src="~/Scripts/notify.min.js"></script>
+        @*<link href="~/Scripts/css/NotificationCustomStyle.css" rel="stylesheet">
+        <script src="~/Scripts/notify.min.js"></script>*@
         <link href="~/Scripts/css/ChatCustomStyle.css" rel="stylesheet">
         <script src="~/Scripts/js/ChatCustomScript.js"></script>
     }
@@ -126,11 +119,13 @@
     
 <script>
     $(function () {
+        //var user = $.connection.userHub;
         $("#message").keydown(function (e) {
             if (e.keyCode == 13) {
                 send.click();
             }
         });
+
         Chat.Init(@ViewBag.CurrentUserId, "@ViewBag.Partial");
     });
 </script>
