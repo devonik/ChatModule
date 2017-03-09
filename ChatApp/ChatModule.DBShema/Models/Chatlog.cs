@@ -13,6 +13,6 @@ namespace ChatModule.DBShema.Models
         public int empfaenger_id { get; set; }
         public string message { get; set; }
         public DateTime timestamp { get; set; }
-        public virtual ICollection<Category> Category { get; set; }
+        public virtual ICollection<SupportGroup> SupportGroup { get; set; }
     }
 }
