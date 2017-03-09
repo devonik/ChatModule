@@ -10,9 +10,9 @@ namespace ChatModule.Hubs
     //SignalR uses ‘Hub’ objects to communicate between the client and the server.
     public class NotificationHub : Hub
     {
-        public void SendNotification(string notification, int empfaenger_id)
+        public void SendNotification(string notification, int sender_id, int empfaenger_id)
         {
-            GlobalHost.ConnectionManager.GetHubContext<NotificationHub>().Clients.All.getNotification(notification, empfaenger_id);
+            GlobalHost.ConnectionManager.GetHubContext<NotificationHub>().Clients.All.getNotification(notification, sender_id, empfaenger_id);
         }
     }
     //you can see here, the NotificationHub.cs class is empty. Left the class empty as we will use the class later from another place.

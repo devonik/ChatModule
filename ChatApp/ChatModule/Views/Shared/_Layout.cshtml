@@ -64,6 +64,7 @@
     
     <script>
         $(function () {
+            console.log(@ViewBag.CurrentUserId);
             // Click on notification icon for show notification
             $('span.noti').click(function (e) {
                 e.stopPropagation();
@@ -82,18 +83,28 @@
                 $('span.count').html(count);
             }
             var notification = $.connection.notificationHub;
-           
             notification.client.getNotification = function (notification, empfaenger_id) {
                 console.log("Empfange Notification...");
-                console.log("empfaenger_id: " + empfaenger_id + ", localStorage.getItem(currentUserId): " + localStorage.getItem("currentUserId"))
-                if (empfaenger_id == localStorage.getItem("currentUserId")) {
+                if (empfaenger_id == (@ViewBag.CurrentUserId)) {
                     console.log(notification + " wurde als Notfication dem Client hinzugefügt!");
                     updateNotificationCount();
                     $('#notiContent').html('');
                     $('#notiContent').append($.notify(notification, "info"));
                 }
             };
-
+            $(window).bind('beforeunload', function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "/Chatlogs/SaveLogoutTime?currentUserId=" + @ViewBag.CurrentUserId,
+                    success: function () {
+                        alert("Der Timestamp vom Userlogin ID=" + @ViewBag.CurrentUserId + " wurde geändert");
+                    },
+                    error: function () {
+                        console.log("Userlogin ID=" + @ViewBag.CurrentUserId + " Timestamp wurde nicht gesetzt");
+                    }
+                });
+                
+            });
         });
     </script>
    

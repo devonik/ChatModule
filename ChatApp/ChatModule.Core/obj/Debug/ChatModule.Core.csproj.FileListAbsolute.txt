@@ -8,3 +8,8 @@ D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\bin\Debug\ChatModul
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.csprojResolveAssemblyReference.cache
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.dll
 D:\Abschlussprojekt\Niklas\Niklas\ChatModule\ChatModule.Core\obj\Debug\ChatModule.Core.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\bin\Debug\ChatModule.Core.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\bin\Debug\ChatModule.Core.pdb
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.csprojResolveAssemblyReference.cache
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.dll
+C:\Abschlussprojekt\ChatModuleGit\ChatApp\ChatModule.Core\obj\Debug\ChatModule.Core.pdb

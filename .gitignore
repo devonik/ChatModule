@@ -1,2 +1,10 @@
 /ChatApp/ChatModule/bin
 /ChatApp/ChatModule/obj
+/ChatApp/.vs
+/ChatApp/ChatModule.Core/obj
+/ChatApp/ChatModule.Core/bin
+/ChatApp/ChatModule.DataAccess/bin
+/ChatApp/ChatModule.DataAccess/obj
+/ChatApp/ChatModule.DBShema/bin
+/ChatApp/ChatModule.DBShema/obj
+/ChatApp/ChatModule/App_Data

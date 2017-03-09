@@ -8,9 +8,10 @@ namespace SimpleUI.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int currentUserId)
         {
-            return View();
+            ViewBag.CurrentUserId = currentUserId;
+            return View(ViewBag);
         }
 
         public ActionResult About()
