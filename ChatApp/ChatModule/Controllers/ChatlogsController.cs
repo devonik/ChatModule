@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ChatModule.DBShema;
 using ChatModule.DBShema.Models;
+using System.Data.Entity.Validation;
 
 namespace ChatModule.Controllers
 {
@@ -125,8 +126,11 @@ namespace ChatModule.Controllers
             }
             base.Dispose(disposing);
         }
-        public void SendMessage(int sender_id, int empfaenger_id, string message)
+        [ValidateInput(false)]
+        public String SendMessage(int sender_id, int empfaenger_id, string message)
         {
+
+            Console.WriteLine(message);
             var chatlog = new Chatlog
             {
                 sender_id = sender_id,
@@ -134,8 +138,26 @@ namespace ChatModule.Controllers
                 message = message,
                 timestamp = DateTime.Now
             };
-            db.Chatlog.Add(chatlog);
-            db.SaveChanges();
+            try
+            {
+                db.Chatlog.Add(chatlog);
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                //throw;
+            }
+            return message;
         }
         //Gibt die Chat Messages in der Datenbank als JsonObject zurück
         public JsonResult GetChatUser2User(int sender_id, int empfaenger_id)
@@ -203,9 +225,10 @@ namespace ChatModule.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public void ClearChat()
+        public void ClearChat(int sender_id, int empfaenger_id)
         {
             var rows = from o in db.Chatlog
+                       where (o.sender_id == sender_id && o.empfaenger_id == empfaenger_id) || (o.sender_id == empfaenger_id && o.empfaenger_id == sender_id)
                        select o;
             foreach (var row in rows)
             {
