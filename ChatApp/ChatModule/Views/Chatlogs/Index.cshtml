@@ -6,13 +6,15 @@
 
 <div id="top">
     <h4></h4>
+    <h5></h5>
 </div>
-<button class="k-button"><a href="http://ham-hau-12254d:1239/Chat/Chatlogs/ClearChat">Clear Chat</a></button>
+
+@*<button class="k-button"><a href="http://ham-hau-12254d:1239/Chat/Chatlogs/ClearChat">Clear Chat</a></button>*@
 <div id="chatContent">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <div id="chatbox">
         <div id="chooseSupportDiv">
-            <input id="chooseSupport" style="display:none;"/>
+            <div id="chooseSupport" style="display:none;width:300px;" ></div>
         </div>
         @*<div id="tabstrip">
             <ul>
@@ -30,11 +32,11 @@
                     "</div>"
                 }*@
 
-                <div id="topmenu">
+                @*<div id="topmenu">
                     <span class="friends"></span>
-                    <span class="chats" @*onclick="Chat.Chatrooms();*@"></span>
+                    <span class="chats" @*onclick="Chat.Chatrooms();"></span>
                     <span class="history"></span>
-                </div>
+                </div>*@
                 <div id="tabstrip1" style="height: auto !important;">
                     <div id="friends">
 
@@ -50,7 +52,6 @@
         @*****************************************Tabstrip1********************************************************@
         <div id="chatview" class="p1">
             <div id="profile">
-
             </div>
             
             <div id="chat-messages">
@@ -58,9 +59,13 @@
 
             </div>
 
-            <div id="sendmessage">
-                <input type="text" placeholder="Send message..." id="message"/>
-                <button id="send" type="submit" onclick="Chat.SendMessage();"></button>
+            <div id="sendmessage" style="position:relative;">
+                    <span id="notAllowed" style="position:absolute;z-index:1;top:20%;left:50%"></span>
+                    <button id="send" onclick="Chat.SendMessage();"></button>
+                    <textarea id="messageeditor" style="position:relative;" name="message" placeholder="Schreiben Sie hier Ihre Nachricht...Enter zum Senden, Enter+Shift für Absatz"></textarea>
+                    
+                @*<input type="text" placeholder="Send message..." id="message"/>
+                <button id="send" type="submit" onclick="Chat.SendMessage();"></button>*@
             </div><br />
             <div id="isTyping" style="position:absolute;opacity:0.5;"></div>
 
@@ -120,11 +125,11 @@
 <script>
     $(function () {
         //var user = $.connection.userHub;
-        $("#message").keydown(function (e) {
-            if (e.keyCode == 13) {
-                send.click();
-            }
-        });
+        //$("#message").keydown(function (e) {
+        //    if (e.keyCode == 13) {
+        //        send.click();
+        //    }
+        //});
 
         Chat.Init(@ViewBag.CurrentUserId, "@ViewBag.Partial");
     });
