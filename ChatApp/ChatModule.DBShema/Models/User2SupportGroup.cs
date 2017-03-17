@@ -11,7 +11,9 @@ namespace ChatModule.DBShema.Models
     {
         [Key]
         public int user2supportgroup_id { get; set; }
+        [Required]
         public int supportgroup_id { get; set; }
+        [Required]
         public int user_id { get; set; }
         public virtual SupportGroup SupportGroup { get; set; }
         public virtual User User { get; set; }

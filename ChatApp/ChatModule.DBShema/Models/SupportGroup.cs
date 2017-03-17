@@ -11,6 +11,7 @@ namespace ChatModule.DBShema.Models
     {
         [Key]
         public int supportgroup_id { get; set; }
+        [Required]
         public string subject { get; set; }
         public string email { get; set; }
     }
