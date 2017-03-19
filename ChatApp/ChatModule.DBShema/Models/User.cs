@@ -9,7 +9,6 @@ namespace ChatModule.DBShema.Models
     {
         [Key]
         public int user_id { get; set; }
-        public int mitarbieter_id { get; set; }
         [Required]
         public string first_name { get; set; }
         [Required]
