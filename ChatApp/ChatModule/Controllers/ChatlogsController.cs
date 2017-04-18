@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : ChatModule
+// Author           : grieger
+// Created          : 03-09-2017
+//
+// Last Modified By : grieger
+// Last Modified On : 03-14-2017
+// ***********************************************************************
+// <copyright file="ChatlogsController.cs" company="Berenberg">
+//     Copyright © Berenberg 2016
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,11 +25,22 @@ using System.Data.Entity.Validation;
 
 namespace ChatModule.Controllers
 {
+    /// <summary>
+    /// Class ChatlogsController.
+    /// </summary>
+    /// <seealso cref="System.Web.Mvc.Controller" />
     public class ChatlogsController : Controller
     {
+        /// <summary>
+        /// The database
+        /// </summary>
         private ChatContext db = new ChatContext();
 
         // GET: Chatlogs
+        /// <summary>
+        /// Indexes this instance.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         public ActionResult Index()
         {
             var request = Request;
@@ -24,6 +48,11 @@ namespace ChatModule.Controllers
         }
 
         // GET: Chatlogs/Details/5
+        /// <summary>
+        /// Detailses the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>ActionResult.</returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -39,6 +68,10 @@ namespace ChatModule.Controllers
         }
 
         // GET: Chatlogs/Create
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns>ActionResult.</returns>
         public ActionResult Create()
         {
             return View();
@@ -47,6 +80,11 @@ namespace ChatModule.Controllers
         // POST: Chatlogs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Creates the specified chatlog.
+        /// </summary>
+        /// <param name="chatlog">The chatlog.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "chatlog_id,sender_name,category_id,message,timestamp")] Chatlog chatlog)
@@ -62,6 +100,11 @@ namespace ChatModule.Controllers
         }
 
         // GET: Chatlogs/Edit/5
+        /// <summary>
+        /// Edits the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>ActionResult.</returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,6 +122,11 @@ namespace ChatModule.Controllers
         // POST: Chatlogs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edits the specified chatlog.
+        /// </summary>
+        /// <param name="chatlog">The chatlog.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "chatlog_id,sender_name,category_id,message,timestamp")] Chatlog chatlog)
@@ -93,6 +141,11 @@ namespace ChatModule.Controllers
         }
 
         // GET: Chatlogs/Delete/5
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>ActionResult.</returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,6 +161,11 @@ namespace ChatModule.Controllers
         }
 
         // POST: Chatlogs/Delete/5
+        /// <summary>
+        /// Deletes the confirmed.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -118,6 +176,10 @@ namespace ChatModule.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and optionally releases managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -126,22 +188,29 @@ namespace ChatModule.Controllers
             }
             base.Dispose(disposing);
         }
-        [ValidateInput(false)]
+        /// <summary>
+        /// Sends the message.
+        /// </summary>
+        /// <param name="sender_id">The sender identifier.</param>
+        /// <param name="empfaenger_id">The empfaenger identifier.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>String...The Message parameter</returns>
         public String SendMessage(int sender_id, int empfaenger_id, string message)
         {
-
+            var decoded = HttpUtility.HtmlDecode(message);
             Console.WriteLine(message);
             var chatlog = new Chatlog
             {
                 sender_id = sender_id,
                 empfaenger_id = empfaenger_id,
-                message = message,
+                message = decoded,
                 timestamp = DateTime.Now
             };
             try
             {
                 db.Chatlog.Add(chatlog);
                 db.SaveChanges();
+                return "Message send success!";
             }
             catch (DbEntityValidationException e)
             {
@@ -155,11 +224,17 @@ namespace ChatModule.Controllers
                             ve.PropertyName, ve.ErrorMessage);
                     }
                 }
+                return "Message send failed!";
                 //throw;
             }
-            return message;
         }
         //Gibt die Chat Messages in der Datenbank als JsonObject zurück
+        /// <summary>
+        /// Gets the chat user2 user.
+        /// </summary>
+        /// <param name="sender_id">The sender identifier.</param>
+        /// <param name="empfaenger_id">The empfaenger identifier.</param>
+        /// <returns>JsonResult...The Chat history of the 2 Users</returns>
         public JsonResult GetChatUser2User(int sender_id, int empfaenger_id)
         {
             //var rows = db.Database.SqlQuery<Chatlog>("SELECT * FROM Chatlog a where (a.sender_id = " + sender_id + " AND a.empfaenger_id = " + empfaenger_id + ") OR (a.sender_id = " + empfaenger_id + " AND a.empfaenger_id = " + sender_id + ")").ToList();
@@ -179,6 +254,10 @@ namespace ChatModule.Controllers
                          }), JsonRequestBehavior.AllowGet
             );
         }
+        /// <summary>
+        /// Gets all subjects.
+        /// </summary>
+        /// <returns>JsonResult...Get All Subjects in Database</returns>
         public JsonResult GetAllSubjects()
         {
             return Json((from a in db.SupportGroup
@@ -189,6 +268,11 @@ namespace ChatModule.Controllers
                          }), JsonRequestBehavior.AllowGet
             );
         }
+        /// <summary>
+        /// Sets the user status.
+        /// </summary>
+        /// <param name="status">The status.</param>
+        /// <param name="currentUserId">The current user identifier.</param>
         public void SetUserStatus(string status, int currentUserId)
         {
             using (var db = new ChatContext())
@@ -206,6 +290,11 @@ namespace ChatModule.Controllers
                 }
             }
         }
+        /// <summary>
+        /// Gets the messages since last login.
+        /// </summary>
+        /// <param name="currentUserId">The current user identifier.</param>
+        /// <returns>JsonResult.</returns>
         public JsonResult GetMessagesSinceLastLogin(int currentUserId)
         {
             var result = from a in db.Chatlog
@@ -225,6 +314,11 @@ namespace ChatModule.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Clears the chat.
+        /// </summary>
+        /// <param name="sender_id">The sender identifier.</param>
+        /// <param name="empfaenger_id">The empfaenger identifier.</param>
         public void ClearChat(int sender_id, int empfaenger_id)
         {
             var rows = from o in db.Chatlog
@@ -236,6 +330,11 @@ namespace ChatModule.Controllers
             }
             db.SaveChanges();
         }
+        /// <summary>
+        /// Gets the user information by identifier.
+        /// </summary>
+        /// <param name="currentUserId">The current user identifier.</param>
+        /// <returns>JsonResult.</returns>
         public JsonResult GetUserInfoById(int currentUserId)
         {
             //var result = db.User.Where(a => a.user_id == currentUserId).FirstOrDefault();
