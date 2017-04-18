@@ -2,6 +2,7 @@
  * Created by Niklas Grieger on 02.12.2016.
  * js for the Chat Widget
  */
+/// <var>The chat javascript as a global variabel</var>
 var Chat = Chat || (function () {
     var allCategoriesDataSource;
     var allUserDatasource;
@@ -15,8 +16,6 @@ var Chat = Chat || (function () {
     var chat = $.connection.chatHub;
     var notification = $.connection.notificationHub;
     var user = $.connection.userHub;
-    //Ausgabe des SignalR logs in der Browser Console
-    //$.connection.hub.logging = true;
     //Füllt die Kontaktlist von dem Normal User
     function fillUserlist() {
         /// <summary>
@@ -45,11 +44,6 @@ var Chat = Chat || (function () {
                         contactlist.push(contact);
                     });
                 supportGroups = data;
-                //Hinzufügen der Searchbox zum Array
-                var searchbox = "<div id='search'>" +
-                                    "<input type='text' id='searchfield' placeholder='Search contacts...' />" +
-                                "</div>";
-                contactlist.push(searchbox);
                 //Das Komplette Array wird dem HTML element hinzugefügt
                 $("#friends").html(contactlist);
             },
@@ -88,11 +82,6 @@ var Chat = Chat || (function () {
                             contactlist.push(contact);
                         }
                     });
-                //Hinzufügen der Searchbox zum Array
-                var searchbox = "<div id='search'>" +
-                                    "<input type='text' id='searchfield' placeholder='Search contacts...' />" +
-                                "</div>";
-                contactlist.push(searchbox);
                 //Das Komplette Array wird dem HTML element hinzugefügt
                 $("#friends").html(contactlist);
             },
@@ -102,7 +91,6 @@ var Chat = Chat || (function () {
     //Lädt die Messages nach dem Auswählen eines Kontakt
     function loadMessagesUser2User() {
         
-        $("#top").hide();
         var timenow = kendo.toString(new Date, "dd.MM.yyyy HH:mm:ss");
         var chatlogu2u = [];
         var sender_id = currentUserDataSource.user_id;
@@ -115,8 +103,6 @@ var Chat = Chat || (function () {
             var url = "/Chatlogs/GetChatUser2User";
         }
         //Get the Messages by User 2 User
-        //setTimeout(function () {
-
             $.ajax({
                 type: 'GET',
                 data: dataString,
@@ -131,8 +117,6 @@ var Chat = Chat || (function () {
                     $.each(data,
                         function (i, item) {
                             if (item.message !== "") {
-                                //Encoded den html content aus der datenbank, damit zb <script> nicht ausgeführt ist
-                                //var encodedMsg = $('<div />').text(item.message).html();
                                 var chatlogu2uItem = "";
                                 var timeFromNow = kendo.toString(kendo.parseDate(item.timestamp, "H:mm"), "H:mm");
                                 // Wenn der Current User der Empfänger der Nachricht ist, wird die Nachricht links angeordnet
@@ -167,31 +151,15 @@ var Chat = Chat || (function () {
                 //Wenn nicht angegeben kommt es im IE zu Problemen: Wenn eine Message geschickt wird und dann der Chat geöffnet wird wurde die Message nicht angezeigt
                 cache: false
             });
-        //},500);
         //Scrollt nach unten beim ersten mal laden des Chats
         setTimeout(function () {
             $("#chat-messages").scrollTop($("#chat-messages").prop("scrollHeight"));
         }, 100);
-        //Inititalisiert die Hub Connection zum senden an den Hub
-        //$.connection.hub.start().done(function () {
-            
-        //    $('#messageeditor').keypress(function (e) {
-        //        var encodedName = currentUserDataSource.full_name;
-        //        //Sendet das Signal, das jemand Schreibt an den Hub (Server)
-                        
-        //        console.log("SignalR an Server: isTyping getriggert");
-        //        chat.server.isTyping(encodedName, sender_id, empfaenger_id, currentUserDataSource.user_id);
-                    
-        //    });
-        //    }).fail(function (reason) {
-        //        console.log("SignalR connection in UserisTyping failed: " + reason);
-        //    });
-            
-        //}
     }
     //Speichert ein Message in der Datenbank und sendet diese an den SignalR Hub
     //Wird ausgeführt, sobald auf den Senden Button geklickt wurde oder die Enter Taste in der Message Box ausgeführt wurde
     function sendMessage() {
+        var validator = $("#messageForm").data("kendoValidator");
         console.log("IM sendMessage()");
         /// <summary>
         /// Sends the message user2 user.
@@ -199,55 +167,56 @@ var Chat = Chat || (function () {
         var timeNow = kendo.toString(new Date(), "H:mm");
         var sender_id = currentUserDataSource.user_id;
         var sender_name = currentUserDataSource.full_name;
-        var editor = $("#messageeditor").data("kendoEditor");
-        console.log("value im editor:");
-        console.log(editor.value());
-        //Decoded den Content im Editor, damit die html tags in der datenbank gespeichert werden inkl. umlaute.
-        var decodedMsg = $('<div />').html(editor.value()).text();
-        console.log(decodedMsg);
-        //Fängt script in der Message ab
-        if (decodedMsg.indexOf('script') >= 0) {
-            console.log("beinhaltet scripting");
-            decodedMsg = "";
-            console.log(editor);
-            $("#notAllowed").notify("Kein Scripting erlaubt", "error");
-        }
-        if (decodedMsg !== "") {
-            
+        //Message ohne jegliches html
+        var decodedMsg = "";
+        console.log("tru kendo editor value:");
+        console.log($("#messageeditor").data("kendoEditor").value());
+        var decodedMsg = $('<div />').html($("#messageeditor").data("kendoEditor").value()).text();
+        //Encodiert den Text as dem Editor in &...
+        var encodedMsg = $('<div />').text($("#messageeditor").data("kendoEditor").value()).html();
+        //Encodiert erneut um es an die Methode senden zu können
+        var encodedURIMessage = encodeURIComponent(encodedMsg);
+        console.log("encodedURIMessage");
+        console.log(encodedURIMessage);
+
+        
+        if (validator.validate()) {
+            console.log("decodedMsg im if block");
+            console.log(decodedMsg);
             //Start Hub to Send something
             $.connection.hub.start().done(function () {
                 // Call the Send method on the hub. 
                 console.log("SignalR an Server: send message getriggert");
-                chat.server.send(sender_id, empfaenger_id, editor.value(), timeNow);
+                chat.server.send(sender_id, empfaenger_id, $("#messageeditor").data("kendoEditor").value(), timeNow);
                 console.log("SignalR an Server: sendNotification getriggert");
-                notification.server.sendNotification("Neue Message von: " + sender_name,sender_id, empfaenger_id);
-            
+                notification.server.sendNotification("Neue Message von: " + sender_name, sender_id, empfaenger_id);
+
             }).fail(function (reason) {
                 console.log("SignalR connection in sendMessage und/oder sendNotification failed: " + reason);
             });;
-                
-                //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
-                if (partial == "True") {
-                    var url = "/Chat/Chatlogs/SendMessage";
+
+            //Pfad anpassung, wenn es als Partial View geladen wird oder nicht
+            if (partial == "True") {
+                var url = "/Chat/Chatlogs/SendMessage";
+            }
+            else {
+                var url = "/Chatlogs/SendMessage";
+            }
+            var dataString = 'sender_id=' + sender_id + '&empfaenger_id=' + empfaenger_id + '&message=' + encodedURIMessage;
+            $.ajax({
+                type: 'POST',
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: dataString,
+                url: url,
+                success: function (data) {
+                    $("#messageeditor").data("kendoEditor").value("");
+                    $('#messageeditor').val('').focus();
+                },
+                error: function (e) {
+                    console.log(e);
                 }
-                else {
-                    var url = "/Chatlogs/SendMessage";
-                }
-                var dataString = 'sender_id=' + sender_id + '&empfaenger_id=' + empfaenger_id + '&message=' + editor.value();
-                $.ajax({
-                    type: 'POST',
-                    data: dataString,
-                    url: url,
-                    success: function (data) {
-                        var array = [sender_id, empfaenger_id, editor.value(), timeNow];
-                        // Clear text box and reset focus
-                        console.log("gesendete Message");
-                        console.log(data);
-                        editor.value("");
-                        $('#messageeditor').val('').focus();
-                    }
-                });
-            
+            });
+
         }
 
         
@@ -269,19 +238,18 @@ var Chat = Chat || (function () {
                             //Anzeige, wenn der User kein Admin/Supporter ist
                             if (currentUserType == "normal") {
                                 subject = $(this).find("p strong").html();
-                                $("#chooseSupportDiv").kendoWindow({
+                                $("#window_chooseSupport").kendoWindow({
                                     modal: true,
-                                    title: "Wählen Sie Ihren Ansprechpartner"
+                                    title: "Wählen Sie Ihren Ansprechpartner",
+                                    width: 420
                                 });
-                                //kendo.ui.progress($("#chooseSupportDiv"), true);
-                                $('#chooseSupport').kendoGrid({
+                                $('#grid_chooseSupport').kendoGrid({
                                     dataSource: {
                                         transport: {
                                             read: {
                                                 url: "/Chat/Users/GetSupportsBySubject?subject=" + subject,
                                                 success: function (e) {
                                                     console.log(e);
-                                                    //kendo.ui.progress(this.sender.element, false);
                                                     console.log("succes get data to grid");
                                                     console.log(data);
                                                 },
@@ -292,7 +260,9 @@ var Chat = Chat || (function () {
                                             }
                                         }
                                     },
+                                    width: 400,
                                     selectable: "row",
+                                    scrollable: false,
                                     columns: [{
                                         template: "<div style='display:inline-block;'><img class='gridavatar' src='#:data.avatarlink#' alt='Kein Bild gefunden!'/></div>" +
                                                     "<div class='griduser-name'>#: user_name #</div>",
@@ -317,10 +287,6 @@ var Chat = Chat || (function () {
                                             selectedDataItems.push(dataItem);
                                         }
                                         // selectedDataItems contains all selected data items
-                                        console.log("selectedDataItems: ");
-                                        console.log(selectedDataItems);
-                                        console.log("Select item in grid");
-
                                         empfaenger_name = selectedDataItems[0].user_name;
                                         console.log("empfänger_name: " + empfaenger_name);
                                         empfaenger_id = selectedDataItems[0].supporter_id;
@@ -333,23 +299,27 @@ var Chat = Chat || (function () {
 
                                         //Setzt den Profil Header im Chat
                                         var profilHtml = "<div class='userheader " + empfaenger_id + "'>" +
-                                                                "<div id='close' class='glyphicon glyphicon-share-alt'></div>" +
+                                                                "<a href='#' id='close' data-toggle='tooltip' data-placement='bottom' title='Zurück zur Kontaktliste'></a>" +
                                                                 "<img class='avatar' src='" + empfaenger_avatar + "' alt='Kein Bild gefunden!' style='margin:10px;left:14px;position:relative;'/></br>" +
                                                                 "<div class='status " + empfaenger_status + "' style='left:50%; position:relative;'></div></br>" +
                                                                 "<b>Sie sprechen mit: " + empfaenger_name + "</b>"+
                                                             "</div>";
                                         $("#profile").html(profilHtml);
+                                        //Initialisiert den toggle zur Anzeige von Tooltips
+                                        $('#close').tooltip();
 
                                         //Schließt das Window und zeigt den ChatView an
-                                        $("#chooseSupportDiv").data("kendoWindow").close();
-
-                                        $('#friendslist').fadeOut();
-                                        $('#chatview').fadeIn();
-
+                                        $("#window_chooseSupport").data("kendoWindow").close();
                                         setTimeout(function () {
                                             //Scrollt zur letzten Nachricht
                                             $("#chat-messages").scrollTop($("#chat-messages").prop("scrollHeight"));
                                         }, 10);
+                                        $('#friendslist').fadeOut();
+                                        $('#chatview').fadeIn();
+                                        $('#chatview').css("display", "flex");
+                                        $('#chatview').css("flex-direction", "column");
+
+                                        
 
                                         //Funktion zum schließen des Chats und Anzeige der Kontaktliste
                                         $('#close')
@@ -359,21 +329,26 @@ var Chat = Chat || (function () {
                                                 setTimeout(function () {
                                                     $('#chatview').fadeOut();
                                                     $('#friendslist').fadeIn();
-                                                    $("#top").show();
                                                 },
                                                     50);
                                             });
                                             //Lädt die bisherigen Messages aus der Datenbank
-                                            loadMessagesUser2User();
+                                        loadMessagesUser2User();
+                                        
+
 
                                     }
                                     
                                 });
-                                
-                                ////Beim Klick auf das Thema in der Kontaktliste, wird das Window geöffnet
-                                var drp_chooseSupportDiv = $("#chooseSupportDiv").data("kendoWindow");
-                                drp_chooseSupportDiv.center().open();
-                                $("#chooseSupport").css("display", "");
+                                var grid = $("#grid_chooseSupport").data("kendoGrid");
+                                var window = $("#window_chooseSupport").data("kendoWindow");
+                                //apply the activate event, which is thrown only after the animation is played out
+                                window.one("activate", function () {
+                                    grid.resize();
+                                });
+                                ////Beim Klick auf das Thema in der Kontaktliste, wird das Window geöffnet und das grid angezeigt
+                                window.center().open();
+                                $("#grid_chooseSupport").css("display", "");
                                 
                             }
                             //Anzeige, wenn der CurrentUser ein Supporter ist
@@ -395,24 +370,30 @@ var Chat = Chat || (function () {
 
                                 //Setzt den Profil Header im Chat
                                 var profilHtml = "<div class='userheader "+empfaenger_id+"'>"+
-                                                    "<div id='close' class='glyphicon glyphicon-share-alt'></div>" +
+                                                    "<a href='#' id='close' data-toggle='tooltip' data-placement='bottom' title='Zurück zur Kontaktliste'></a>" +
                                                     "<img class='avatar' src='" + empfaenger_avatar + "' alt='Kein Bild gefunden!' style='margin:10px;left:14px;position:relative;'/></br>" +
                                                     "<div class='status " + empfaenger_status + "' style='left:50%; position:relative;'></div></br>" +
                                                     "<b>Sie sprechen mit: " + empfaenger_name + "</b>"
                                 "</div>";
                                 
+                                
                                 $("#profile").html(profilHtml);
                                 $("#profile").append("<button class='btn-primary' style='margin:10px;' onclick='javascript:Chat.CloseRequest(" + sender_id + "," + empfaenger_id + ");'>Anfrage schließen</button>");
                                 //Schließt die Kontaktliste und zeigt den ChatView an
                                 
-                                $('#friendslist').fadeOut();
-                                $('#chatview').fadeIn();
-                                
-
-                                setTimeout(function(){
+                                //Initialisiert den toggle zur Anzeige von Tooltips
+                                $('#close').tooltip();
+                                setTimeout(function () {
                                     //Scrollt zur letzten Nachricht
                                     $("#chat-messages").scrollTop($("#chat-messages").prop("scrollHeight"));
-                                },10);
+                                }, 10);
+                                $('#friendslist').fadeOut();
+                                $('#chatview').fadeIn();
+                                $('#chatview').css("display", "flex");
+                                $('#chatview').css("flex-direction", "column");
+                                
+                                
+                                
 
                                 //Funktion zum schließen des Chats und Anzeige der Kontaktliste
                                 $('#close')
@@ -472,9 +453,8 @@ var Chat = Chat || (function () {
             console.log("Öffne Chat...");
             $(".friend#" + senderId).find("div").trigger("click");
             setTimeout(function () {
-                $("#chatContent").data("kendoWindow").center().open();
-                //Scrollt zur letzten Nachricht
-                $("#chat-messages").scrollTop($("#chat-messages").prop("scrollHeight"));
+                $("#chatWindow").data("kendoWindow").center().open();
+                
             }, 500);
     }
     //Liest die Messages aus der Datenbank, die der User bekommen hat während er offline wahr. Diese werden als Notfication der Oberfläche hinzugefügt
@@ -495,8 +475,6 @@ var Chat = Chat || (function () {
                     
                     $.each(data, function (index, value) {
                         var encodedMsg = $('<div />').text(value.message).html();
-                        console.log("in getMessagesSinceLastLogout");
-                        console.log(data);
                         $('#notiContent').append($("<li>"+
                                                         "<a style='text-decoration:none !important;' href='javascript:Chat.OpenChatUser2User(" + value.sender_id + ", " + value.empfaenger_id + ");'>" +
                                                             "Neue Message von: " + value.sender_name+"</br>"+
@@ -587,9 +565,6 @@ var Chat = Chat || (function () {
             if (currentUserDataSource.user_id == empfaenger_id) {
                 $('#isTyping').html(name + " schreibt...");
             }
-            //setTimeout(function () {
-            //    $('#isTyping').html('&nbsp;');
-            //}, 5000);
         }
         //Fügt dem User eine Notification in echtzeit hinzu
         notification.client.getNotification = function (notification, sender_id, empfaenger_id) {
@@ -660,22 +635,61 @@ var Chat = Chat || (function () {
                 
         });
     }
+    function kendoValidator() {
+        var container = $("#messageForm");
+        container.kendoValidator({
+            validateOnBlur: false,
+            rules: {
+                maxTextLength: function (textarea) {
+                    if (textarea.data("kendoEditor").value() != "") {
+                        
+                        var maxlength = "200";
+                        var value = textarea.data("kendoEditor").value();
+                        console.log("message länge ohne tags");
+                        console.log(value.replace(/<[^>]+>/g, "").length <= maxlength);
+                        return value.replace(/<[^>]+>/g, "").length <= maxlength;
+                    }
+                    return true;
+                },
+                isValueEmpty: function (textarea) {
+                    value = textarea.data("kendoEditor").value().replace(/<[^>]+>/g, "");
+                    if (value == "") {
+                        return false;
+                    }
+                    return true;
+                },
+                hasScriptTag: function (textarea) {
+                    var value = $('<div />').text($("#messageeditor").data("kendoEditor").value()).html();
+                    if (value.indexOf('script') >= 0) {
+                        return false;
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                maxTextLength: "Es sind nur bis zu 200 Zeichen erlaubt",
+                isValueEmpty: "Die Nachricht ist leer",
+                hasScriptTag: "Kein Scripting erlaubt"
+            }
+        });
+        var validator = $("#messageForm").data("kendoValidator");
+        $("body").click(function () {
+            validator.hideMessages();
+        });
+    }
     //Init 
     function init(currentUserIdParam, Partial) {
         var defaultTools = kendo.ui.Editor.defaultTools;
 
-        //var editorNS = kendo.ui.editor,
-        //registerTool = editorNS.EditorUtils.registerTool,
-        //Tool = editorNS.Tool;
-        //registerTool("sendMessage", new Tool({ key: 13, command: editorNS.NewLineCommand }));
+        //Zum setzen eines Absatzes in der Message = shift+Enter
         defaultTools["insertLineBreak"].options.shift = true;
+        //Deaktiviert die funktion zum einfügen eines Paragraphen 
         delete defaultTools["insertParagraph"].options;
 
         $("#messageeditor").kendoEditor({
             tools: [
               //"bold", "italic", "underline"
             ],
-            encoded: false,
             //Wird getriggert, wenn ein Item in der Toolbar geklickt wird
             execute: function(e) {
                 console.log("executing command", e.name, e.command);
@@ -698,23 +712,18 @@ var Chat = Chat || (function () {
                     }
             }
         });
+        kendoValidator();
         //Zum einstellen der Höhe des Kendo Editors
         setTimeout(function () {
             $(".k-editor iframe.k-content").css("height", "100px");
             $("table.k-editor").css("height", "100px");
         },100);
-        
-
+        $('#send').on('click', function (e) {
+            e.preventDefault();
+            sendMessage();
+        });
         partial = Partial;
         if(currentUserIdParam != null){
-            //if (partial == "True") {
-            //    var urlCurrentUser = "/Chat/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam;
-            //    var urlSetUserOnline = "/Chat/Chatlogs/SetUserStatus?status=" + 'available' + "&currentUserId=" + currentUserIdParam;
-            //}
-            //else{
-            //    var urlCurrentUser = "/Chatlogs/GetUserInfoById?currentUserId=" + currentUserIdParam;
-            //    var urlSetUserOnline = "/Chatlogs/SetUserStatus?status=" + 'available' + "&currentUserId=" + currentUserIdParam;
-            //}
             //Liest Daten aus der Datenbank zu dem aktuellen User
             //Beim erfolg, werden die Messages seit dem letzten Logout abgefragt 
             //Beim erfolg, wird geprüft, ob der User ein Admin ist
@@ -730,6 +739,7 @@ var Chat = Chat || (function () {
             //Setzt den CurrentUser auf den Status inactiv/offline
             setUserOffline(currentUserIdParam);
         
+           
                     
     }
     else{
@@ -740,7 +750,7 @@ var Chat = Chat || (function () {
     //Return functions
     return {
         Init: init,
-        SendMessage: sendMessage,
+        //SendMessage: sendMessage,
         OpenChatUser2User: openChatUser2User,
         CloseRequest:closeRequest
     }
