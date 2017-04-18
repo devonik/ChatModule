@@ -1,11 +1,33 @@
-﻿using ChatModule.DBShema.Models;
+﻿// ***********************************************************************
+// Assembly         : ChatModule.DBShema
+// Author           : grieger
+// Created          : 03-09-2017
+//
+// Last Modified By : grieger
+// Last Modified On : 03-14-2017
+// ***********************************************************************
+// <copyright file="ChatInitializer.cs" company="Berenberg">
+//     Copyright © Berenberg 2016
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using ChatModule.DBShema.Models;
 using System;
 using System.Collections.Generic;
 
 namespace ChatModule.DBShema
 {
+    /// <summary>
+    /// Class ChatInitializer.
+    /// </summary>
+    /// <seealso cref="System.Data.Entity.DropCreateDatabaseIfModelChanges{ChatModule.DBShema.ChatContext}" />
     class ChatInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<ChatContext>
     {
+        /// <summary>
+        /// A method that should be overridden to actually add data to the context for seeding.
+        /// The default implementation does nothing.
+        /// </summary>
+        /// <param name="context">The context to seed.</param>
         protected override void Seed(ChatContext context)
         {
             var user = new List<User>
