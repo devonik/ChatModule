@@ -21,11 +21,11 @@
         body {
             background-image: url('../../img/ScreenShotServicebankFULL.png');
         }
-        #chatContent{
+        #chatWindow{
            min-width: 360px; 
-            min-height: 460px;
-            overflow: hidden;
-            margin-right: .58em;
+           min-height: 500px;
+           overflow: hidden;
+           margin-right: .58em;
         }
     </style>
 </head>
@@ -41,30 +41,13 @@
                     <ul id="notiContent"></ul>
                 </div>
                 @*------------------------------------------ Notification ------------------------------------------------*@
-                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Anwendungsname", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Startseite", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Info", "About", "Home")</li>
-                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
-                </ul>
-            </div>*@
         </div>
     </div>
     <div class="container body-content">
-        <div id="chatContent" style="display:none;"></div>
+        <div id="chatWindow" style="display:none;"></div>
         @RenderBody()
-        <button id="btnChat"style="bottom: 0px; right: 0px; position:fixed;">Support Chat</button>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Meine ASP.NET-Anwendung</p>
-        </footer>
+        <button id="btnChat" style="bottom: 0px; right: 0px; position:fixed;">Support Chat</button>
     </div>
     <script>
         $(document).ready(function () {
@@ -86,9 +69,9 @@
 
             
                 
-            $("#chatContent").kendoWindow({
+            $("#chatWindow").kendoWindow({
                 minWidth: 360,
-                minHeight: 460,
+                minHeight: 500,
                     content:"/Chat/Home/GetChat?partial=true&currentUserId="+@ViewBag.CurrentUserId,
                     refresh: function (e){
                         console.log(e);
@@ -96,7 +79,6 @@
                     },
                     visible: false,
                     actions: [
-                                "Pin",
                                 "Minimize",
                                 "Maximize",
                                 "Close"
@@ -109,16 +91,12 @@
                     title: "Live Support Chat",
                     modal:true
                 });
-            var chatWindow = $("#chatContent").data("kendoWindow");
+            var chatWindow = $("#chatWindow").data("kendoWindow");
             kendo.ui.progress(chatWindow.element, true);
             $("#btnChat").click(function () {
-                //Beim erneuten öffnen wird wieder die Kontaktliste angezeigt
-                //setTimeout(function () {
-                //    $('#chatview').fadeOut();
-                //    $('#friendslist').fadeIn();
-                //    $("#top").show();
-                //}, 50);
-                //chatWindow.refresh("/Chat/Home/GetChat?partial=true&currentUserId="+@*@ViewBag.CurrentUserId*@);
+                //reset forms
+                $("#messageeditor").data("kendoEditor").value("");
+                $("#searchfield").val("");
                 chatWindow.center().open();
             });
             
